@@ -1,4 +1,4 @@
-package com.jet2.Jet2Assignment.Models
+package com.jet2.Jet2Assignment.models
 
 import com.google.gson.annotations.SerializedName
 

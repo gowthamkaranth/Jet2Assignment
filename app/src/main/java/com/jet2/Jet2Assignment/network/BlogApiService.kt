@@ -1,6 +1,6 @@
 package com.jet2.Jet2Assignment
 
-import com.jet2.Jet2Assignment.Models.BlogResponseDTO
+import com.jet2.Jet2Assignment.models.BlogResponseDTO
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import retrofit2.Retrofit
