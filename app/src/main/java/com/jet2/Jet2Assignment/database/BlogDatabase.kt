@@ -29,8 +29,7 @@ abstract class BlogDatabase :RoomDatabase(){
                             it,
                             BlogDatabase::class.java,
                             DATABASE_NAME
-                        ).fallbackToDestructiveMigration()
-                            .build()
+                        ).build()
                     }
                     // Assign INSTANCE to the newly created database.
                     INSTANCE = instance

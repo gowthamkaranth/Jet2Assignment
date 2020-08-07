@@ -23,27 +23,15 @@ class BlogPostRepository(val context: Context) {
         val livePagedListBuilder = LivePagedListBuilder<Int,BlogResponseEntity>(getBlogFromDB(),DATABASE_PAGE_SIZE)
         return livePagedListBuilder.setBoundaryCallback(BlogRepoBoundaryCallBack(this,context)).build()
     }
-    /**
-     * Fetch Blog items through network call
-     * @param page page number
-     * @param limit items per page
-     */
-    fun getBlogPosts(page:String,limit:String) {
-        disposable = blogApiService.fetchBlogPost(page,limit)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                result ->
-            },
-                {
-                    error ->
-                    Log.d(TAG,error.message)
-                }
-            )
-
-    }
     fun getBlogFromDB(): DataSource.Factory<Int, BlogResponseEntity> {
             return  BlogDatabase.getInstance(context)?.blogResponseDAO?.sendDataSource()!!
     }
-
+    fun updateDataToDB(blogEntity : List<BlogResponseEntity>){
+        Thread(Runnable {
+            updateBlogDB(blogEntity)
+        }).start()
+    }
+    fun updateBlogDB(blogEntity: List<BlogResponseEntity>){
+        BlogDatabase.getInstance(context)?.blogResponseDAO?.insertAll(blogEntity)
+    }
 }

@@ -16,7 +16,7 @@ var disposable: Disposable? = null
 
 
 interface BlogApiService {
-    //TODO remove hardcoded value
+    //TODO Remove hardcoded values
     @GET("blogs")
     fun fetchBlogPost(@Query("page")page:String,@Query("limit")limit:String) : Observable<List<BlogResponseDTO>>
 

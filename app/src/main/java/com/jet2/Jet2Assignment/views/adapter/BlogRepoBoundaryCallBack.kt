@@ -2,6 +2,8 @@ package com.jet2.Jet2Assignment.views.adapter
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
+import androidx.core.content.contentValuesOf
 import androidx.paging.PagedList
 import com.jet2.Jet2Assignment.models.BlogResponseDTO
 import com.jet2.Jet2Assignment.repositories.BlogPostRepository
@@ -26,14 +28,12 @@ class BlogRepoBoundaryCallBack (val blogPostRepository: BlogPostRepository,val c
 
     override fun onItemAtEndLoaded(itemAtEnd: BlogResponseEntity) {
         if(itemAtEnd.pagenumber!=null) {
-        page = itemAtEnd.pagenumber!! + 1
+            page = itemAtEnd.pagenumber!! + 1
             getBlogPosts(page, DATABASE_PAGE_SIZE)
         }
 
     }
 
-    override fun onItemAtFrontLoaded(itemAtFront: BlogResponseEntity) {
-    }
     /**
      * Fetch Blog items through network call
      * @param page page number
@@ -46,24 +46,16 @@ class BlogRepoBoundaryCallBack (val blogPostRepository: BlogPostRepository,val c
             .subscribe({
                     result ->
                     val blogResponseEntities = convertResponseToEntity(result,page)
-                        updateDataToDB(blogResponseEntities)
+                        blogPostRepository.updateDataToDB(blogResponseEntities)
 
             },
                 {
+                    //TODO Error handling
                         error ->
                     Log.d(TAG,error.message)
+                    Toast.makeText(context,error.message,Toast.LENGTH_LONG).show()
                 }
             )
 
     }
-
-    fun updateDataToDB(blogEntity : List<BlogResponseEntity>){
-        Thread(Runnable {
-            updateBlogDB(blogEntity)
-        }).start()
-    }
-    fun updateBlogDB(blogEntity: List<BlogResponseEntity>){
-    BlogDatabase.getInstance(context)?.blogResponseDAO?.insertAll(blogEntity)
-    }
-
 }

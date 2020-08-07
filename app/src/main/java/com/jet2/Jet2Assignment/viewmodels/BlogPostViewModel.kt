@@ -9,7 +9,7 @@ import com.jet2.Jet2Assignment.repositories.BlogPostRepository
 
 class BlogPostViewModel(val app :Application) : AndroidViewModel(app){
     //TODO use dependency injection
-    val repository = BlogPostRepository(app)
+    private val repository = BlogPostRepository(app)
 
      fun getBlogs():LiveData<PagedList<BlogResponseEntity>>{
          return repository.getBlogResponse()
